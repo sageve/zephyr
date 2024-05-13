@@ -244,7 +244,7 @@ Ambiq Platforms:
   status: odd fixes
   collaborators:
     - aaronyegx
-    - HaoLuo
+    - AlessandroLuo
     - RichardSWheatley
   files:
     - soc/ambiq/
@@ -447,6 +447,7 @@ Bluetooth Audio:
     - tests/bluetooth/audio/
     - tests/bsim/bluetooth/audio/
     - tests/bluetooth/shell/audio.conf
+    - tests/bluetooth/tester/overlay-le-audio.conf
     - doc/connectivity/bluetooth/api/audio/
     - samples/bluetooth/broadcast_audio*/
     - samples/bluetooth/hap*/
@@ -3466,11 +3467,11 @@ nRF Platforms:
   status: maintained
   maintainers:
     - anangl
+    - masz-nordic
   collaborators:
     - jaz1-nordic
     - kl-cruz
     - magp-nordic
-    - masz-nordic
     - nika-nordic
   files:
     - boards/nordic/
@@ -4202,6 +4203,7 @@ West:
   status: odd fixes
   collaborators:
     - aaronyegx
+    - AlessandroLuo
     - RichardSWheatley
   files:
     - modules/hal_ambiq/
