@@ -278,7 +278,26 @@ static int usb_dc_stm32_clock_enable(void)
 #if defined(CONFIG_SOC_SERIES_STM32H7X)
 	LL_AHB1_GRP1_DisableClockSleep(LL_AHB1_GRP1_PERIPH_USB1OTGHSULPI);
 #else
-	LL_AHB1_GRP1_DisableClockLowPower(LL_AHB1_GRP1_PERIPH_OTGHSULPI);
+	//LL_AHB1_GRP1_DisableClockLowPower(LL_AHB1_GRP1_PERIPH_OTGHSULPI);
+	/*
+	In order to use the OTG_HS PHY, the following configuration steps are required before the
+	configuration of the OTG_HS:
+	1. Activate clocks in RCC clock gating registers for SYSCFG, OTG_HS, and
+	OTG_HS PHY.
+	2. Configure desired clock settings for OTG_HS PHY using CLKSEL bitfield
+	in SYSCFG_OTGHSPHYCR.
+	3. Adjust the disconnect threshold by writing 0b010 to COMPDISTUNE bitfield and the
+	squelch threshold by writing 0b000 to SQRXTUNE bitfield in
+	SYSCFG_OTGHSPHYTUNER2.
+	4. Enable the OTG_HS PHY by setting EN in SYSCFG_OTGHSPHYCR
+	*/
+	LL_APB3_GRP1_EnableClock(LL_APB3_GRP1_PERIPH_SYSCFG);
+	LL_AHB2_GRP1_EnableClock(LL_AHB2_GRP1_PERIPH_USBPHY);
+	LL_AHB2_GRP1_DisableClockStopSleep(LL_AHB2_GRP1_PERIPH_USBPHY);
+	SYSCFG->OTGHSPHYCR = 0b001100;    // 16 MHz; enabled
+	SYSCFG->OTGHSPHYTUNER2 = 0b010 << SYSCFG_OTGHSPHYTUNER2_COMPDISTUNE_Pos;
+	SYSCFG->OTGHSPHYCR |= 1;
+
 #endif
 
 #if USB_OTG_HS_EMB_PHY
